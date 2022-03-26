@@ -3,30 +3,6 @@ use quote::quote;
 use syn::{punctuated::Punctuated, token::Comma};
 
 /// Implements the `Chargeable` trait for an instruction account.
-///
-/// ### Example:
-///
-/// ```
-/// use anchor_lang::prelude::*;
-/// use common::charge::*;
-///
-/// #[derive(Accounts, Chargeable)]
-/// pub struct MyInstruction<'info> {
-///    #[account(mut)]
-///    #[fee_payer]
-///    // If this field was called `fee_payer`, then the attribute would not be required.
-///    pub owner: Signer<'info>,
-///    // Here the attribute can be omitted.
-///    #[account(mut)]
-///    pub fee_payer_ata: Account<'info, TokenAccount>,
-///    #[account(mut)]
-///    #[fee_incinerator_ata]
-///    pub incinerator: Account<'info, TokenAccount>,
-///    #[fee_token_address]
-///    pub token: Account<'info, Mint>,
-///    pub token_program: Program<'info, Token>,
-/// }
-/// ```
 #[proc_macro_derive(
     Chargeable,
     attributes(
