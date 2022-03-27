@@ -17,8 +17,42 @@
 //!   pub token_metadata_program: Program<'info, TokenMetadata>,
 //! }
 //! ```
-use anchor_lang::prelude::*;
-use mpl_token_metadata::state;
+use anchor_lang::{
+    prelude::*,
+    solana_program::{self, entrypoint::ProgramResult},
+};
+use mpl_token_metadata::{
+    instruction,
+    state::{self, DataV2},
+};
+
+#[derive(Accounts)]
+pub struct UpdateMetadataAccountV2<'info> {
+    pub metadata_account: AccountInfo<'info>,
+    pub update_authority: AccountInfo<'info>,
+}
+
+pub fn update_metadata_accounts_v2<'info>(
+    ctx: CpiContext<'_, '_, '_, 'info, UpdateMetadataAccountV2<'info>>,
+    data: DataV2,
+) -> ProgramResult {
+    let ix = instruction::update_metadata_accounts_v2(
+        mpl_token_metadata::ID,
+        ctx.accounts.metadata_account.key(),
+        ctx.accounts.update_authority.key(),
+        None,
+        Some(data),
+        None,
+        None,
+    );
+
+    solana_program::program::invoke_signed(
+        &ix,
+        &[ctx.accounts.metadata_account, ctx.accounts.update_authority],
+        ctx.signer_seeds,
+    )
+    .map_err(Into::into)
+}
 
 #[derive(Clone)]
 /// Token metadata program struct.
