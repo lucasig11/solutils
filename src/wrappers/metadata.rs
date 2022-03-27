@@ -21,14 +21,8 @@
 //! }
 //! # }
 //! ```
-use anchor_lang::{
-    prelude::*,
-    solana_program::{self, entrypoint::ProgramResult},
-};
-use mpl_token_metadata::{
-    instruction,
-    state::{self, DataV2},
-};
+use anchor_lang::{prelude::*, solana_program};
+use mpl_token_metadata::state::{self, DataV2};
 
 #[derive(Accounts)]
 pub struct UpdateMetadataAccountV2<'info> {
@@ -39,8 +33,8 @@ pub struct UpdateMetadataAccountV2<'info> {
 pub fn update_metadata_accounts_v2<'info>(
     ctx: CpiContext<'_, '_, '_, 'info, UpdateMetadataAccountV2<'info>>,
     data: DataV2,
-) -> ProgramResult {
-    let ix = instruction::update_metadata_accounts_v2(
+) -> Result<()> {
+    let ix = mpl_token_metadata::instruction::update_metadata_accounts_v2(
         mpl_token_metadata::ID,
         ctx.accounts.metadata_account.key(),
         ctx.accounts.update_authority.key(),
