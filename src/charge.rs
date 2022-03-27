@@ -11,8 +11,11 @@
 //! ### Example:
 //!
 //! ```
+//! # #[macro_use] extern crate anchor_lang;
+//! # #[macro_use] extern crate solutils;
 //! use anchor_lang::prelude::*;
-//! use common::charge::*;
+//! use anchor_spl::token::{Token, TokenAccount};
+//! use solutils::charge::Chargeable;
 //!
 //! #[derive(Accounts, Chargeable)]
 //! pub struct MyInstruction<'info> {

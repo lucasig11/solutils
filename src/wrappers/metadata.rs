@@ -2,10 +2,13 @@
 //!
 //! ## Example:
 //! ```
-//! # use anchor_lang::prelude::*;
-//! use anchor_spl::TokenAccount;
+//! # #[macro_use] extern crate anchor_lang;
+//! use anchor_lang::prelude::*;
+//! use solutils::wrappers::metadata::*;
+//! use anchor_spl::token::TokenAccount;
 //!
-//! #[derive(Account)]
+//! # fn main() {
+//! #[derive(Accounts)]
 //! pub struct AccountWithMetadata<'info> {
 //!   pub token: Account<'info, TokenAccount>,
 //!   #[account(
@@ -16,6 +19,7 @@
 //!   pub metadata: Account<'info, MetadataAccount>,
 //!   pub token_metadata_program: Program<'info, TokenMetadata>,
 //! }
+//! # }
 //! ```
 use anchor_lang::{
     prelude::*,
