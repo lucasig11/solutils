@@ -5,13 +5,7 @@ use syn::{punctuated::Punctuated, token::Comma};
 /// Implements the `Chargeable` trait for an instruction account.
 #[proc_macro_derive(
     Chargeable,
-    attributes(
-        fee_payer,
-        fee_payer_ata,
-        fee_token_address,
-        fee_incinerator_ata,
-        token_program
-    )
+    attributes(fee_payer, fee_payer_ata, fee_incinerator_ata, token_program)
 )]
 pub fn chargeable_derive(input: TokenStream) -> TokenStream {
     let input = syn::parse_macro_input!(input as syn::ItemStruct);
@@ -63,17 +57,13 @@ fn impl_chargeable(item_struct: syn::ItemStruct) -> TokenStream {
         let fee_payer,
         let fee_payer_ata,
         let fee_incinerator_ata,
-        let fee_token_address,
         let token_program;
         fields;
         name.span()
     );
 
     quote!(
-        impl<'info> crate::Chargeable<'info> for #name<'info> {
-            fn mint_account(&self) -> &'info anchor_lang::accounts::account::Account<anchor_spl::token::Mint> {
-                &self.#fee_token_address
-            }
+        impl<'info> Chargeable<'info> for #name<'info> {
 
             fn user_ata(&self) -> &'info anchor_lang::accounts::account::Account<anchor_spl::token::TokenAccount> {
                 &self.#fee_payer_ata
