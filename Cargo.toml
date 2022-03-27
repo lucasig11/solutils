@@ -2,11 +2,14 @@
 name = "solutils"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+license = "GPL-3.0"
+description = "Utilities for writing Solana programs using the Anchor framework."
+repository = "https://github.com/lucasig11/solutils"
+keywords = ["solana", "anchor", "blockchain", "utility"]
+categories = ["cryptography::cryptocurrencies"]
 
 [dependencies]
 anchor-lang = "0.22.1"
 anchor-spl = "0.22.1"
 mpl-token-metadata = { version = "1.2.3", features = ["no-entrypoint"] }
-chargeable-derive = { path = "./derive/chargeable" }
+chargeable-derive = { version = "0.1.0", path = "./derive/chargeable" }
