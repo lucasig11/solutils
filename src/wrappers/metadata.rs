@@ -30,6 +30,22 @@ pub struct UpdateMetadataAccountV2<'info> {
     pub update_authority: AccountInfo<'info>,
 }
 
+#[derive(Accounts)]
+pub struct FreezeDelegatedAccount<'info> {
+    pub delegate: AccountInfo<'info>,
+    pub token_account: AccountInfo<'info>,
+    pub edition: AccountInfo<'info>,
+    pub mint: AccountInfo<'info>,
+}
+
+#[derive(Accounts)]
+pub struct ThawDelegatedAccount<'info> {
+    pub delegate: AccountInfo<'info>,
+    pub token_account: AccountInfo<'info>,
+    pub edition: AccountInfo<'info>,
+    pub mint: AccountInfo<'info>,
+}
+
 pub fn update_metadata_accounts_v2<'info>(
     ctx: CpiContext<'_, '_, '_, 'info, UpdateMetadataAccountV2<'info>>,
     data: DataV2,
@@ -47,6 +63,54 @@ pub fn update_metadata_accounts_v2<'info>(
     solana_program::program::invoke_signed(
         &ix,
         &[ctx.accounts.metadata_account, ctx.accounts.update_authority],
+        ctx.signer_seeds,
+    )
+    .map_err(Into::into)
+}
+
+pub fn freeze_delegated_account<'info>(
+    ctx: CpiContext<'_, '_, '_, 'info, FreezeDelegatedAccount<'info>>,
+) -> Result<()> {
+    let ix = mpl_token_metadata::instruction::thaw_delegated_account(
+        mpl_token_metadata::id(),
+        ctx.accounts.delegate.key(),
+        ctx.accounts.token_account.key(),
+        ctx.accounts.edition.key(),
+        ctx.accounts.mint.key(),
+    );
+
+    solana_program::program::invoke_signed(
+        &ix,
+        &[
+            ctx.accounts.delegate.to_account_info(),
+            ctx.accounts.token_account.to_account_info(),
+            ctx.accounts.edition.to_account_info(),
+            ctx.accounts.mint.to_account_info(),
+        ],
+        ctx.signer_seeds,
+    )
+    .map_err(Into::into)
+}
+
+pub fn thaw_delegated_account<'info>(
+    ctx: CpiContext<'_, '_, '_, 'info, ThawDelegatedAccount<'info>>,
+) -> Result<()> {
+    let ix = mpl_token_metadata::instruction::freeze_delegated_account(
+        mpl_token_metadata::id(),
+        ctx.accounts.delegate.key(),
+        ctx.accounts.token_account.key(),
+        ctx.accounts.edition.key(),
+        ctx.accounts.mint.key(),
+    );
+
+    solana_program::program::invoke_signed(
+        &ix,
+        &[
+            ctx.accounts.delegate.to_account_info(),
+            ctx.accounts.token_account.to_account_info(),
+            ctx.accounts.edition.to_account_info(),
+            ctx.accounts.mint.to_account_info(),
+        ],
         ctx.signer_seeds,
     )
     .map_err(Into::into)
