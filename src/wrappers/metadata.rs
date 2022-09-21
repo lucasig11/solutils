@@ -2,8 +2,7 @@
 //!
 //! ## Example:
 //! ```
-//! # #[macro_use] extern crate anchor_lang;
-//! use anchor_lang::prelude::*;
+//! # #[macro_use] extern crate anchor_lang; use anchor_lang::prelude::*;
 //! use solutils::wrappers::metadata::*;
 //! use anchor_spl::token::TokenAccount;
 //!
@@ -152,6 +151,38 @@ impl Owner for MetadataAccount {
 
 impl std::ops::Deref for MetadataAccount {
     type Target = state::Metadata;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+#[derive(Clone)]
+/// Wrapper for [mpl_token_metadata::state::Edition] account.
+pub struct EditionAccount(state::Edition);
+
+impl EditionAccount {
+    pub const LEN: usize = state::MAX_EDITION_LEN;
+}
+
+impl AccountDeserialize for EditionAccount {
+    fn try_deserialize_unchecked(buf: &mut &[u8]) -> Result<Self> {
+        state::Edition::deserialize(buf)
+            .map_err(|_| ErrorCode::AccountDidNotDeserialize.into())
+            .map(Self)
+    }
+}
+
+impl AccountSerialize for EditionAccount {}
+
+impl Owner for EditionAccount {
+    fn owner() -> Pubkey {
+        TokenMetadata::id()
+    }
+}
+
+impl std::ops::Deref for EditionAccount {
+    type Target = state::Edition;
 
     fn deref(&self) -> &Self::Target {
         &self.0
