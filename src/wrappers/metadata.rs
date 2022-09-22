@@ -188,3 +188,35 @@ impl std::ops::Deref for EditionAccount {
         &self.0
     }
 }
+
+#[derive(Clone)]
+/// Wrapper for [mpl_token_metadata::state::MasterEditionV2] account.
+pub struct MasterEditionAccount(state::MasterEditionV2);
+
+impl MasterEditionAccount {
+    pub const LEN: usize = state::MAX_MASTER_EDITION_LEN;
+}
+
+impl AccountDeserialize for MasterEditionAccount {
+    fn try_deserialize_unchecked(buf: &mut &[u8]) -> Result<Self> {
+        state::MasterEditionV2::deserialize(buf)
+            .map_err(|_| ErrorCode::AccountDidNotDeserialize.into())
+            .map(Self)
+    }
+}
+
+impl AccountSerialize for MasterEditionAccount {}
+
+impl Owner for MasterEditionAccount {
+    fn owner() -> Pubkey {
+        TokenMetadata::id()
+    }
+}
+
+impl std::ops::Deref for MasterEditionAccount {
+    type Target = state::MasterEditionV2;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
