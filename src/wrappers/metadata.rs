@@ -70,7 +70,7 @@ pub fn update_metadata_accounts_v2<'info>(
 pub fn freeze_delegated_account<'info>(
     ctx: CpiContext<'_, '_, '_, 'info, FreezeDelegatedAccount<'info>>,
 ) -> Result<()> {
-    let ix = mpl_token_metadata::instruction::thaw_delegated_account(
+    let ix = mpl_token_metadata::instruction::freeze_delegated_account(
         mpl_token_metadata::id(),
         ctx.accounts.delegate.key(),
         ctx.accounts.token_account.key(),
@@ -94,7 +94,7 @@ pub fn freeze_delegated_account<'info>(
 pub fn thaw_delegated_account<'info>(
     ctx: CpiContext<'_, '_, '_, 'info, ThawDelegatedAccount<'info>>,
 ) -> Result<()> {
-    let ix = mpl_token_metadata::instruction::freeze_delegated_account(
+    let ix = mpl_token_metadata::instruction::thaw_delegated_account(
         mpl_token_metadata::id(),
         ctx.accounts.delegate.key(),
         ctx.accounts.token_account.key(),
