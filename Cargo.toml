@@ -1,6 +1,6 @@
 [package]
 name = "solutils"
-version = "0.25.0"
+version = "0.26.0"
 edition = "2021"
 license = "GPL-3.0"
 description = "Utilities for writing Solana programs using the Anchor framework."
@@ -9,7 +9,7 @@ keywords = ["solana", "anchor", "blockchain", "utility"]
 categories = ["cryptography::cryptocurrencies"]
 
 [dependencies]
-anchor-lang = "0.25.0"
-anchor-spl = "0.25.0"
+anchor-lang = "0.26.0"
+anchor-spl = "0.26.0"
 mpl-token-metadata = { version = "1.2.3", features = ["no-entrypoint"] }
 chargeable-derive = { version = "0.1.0", path = "./derive/chargeable" }
